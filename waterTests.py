@@ -5,10 +5,10 @@ from math import sqrt
 #import dev_to_kmeans_article as dtkm
 import jonchar_net_article as jcna
 
-water_removal_ratio = 20000
+# water_removal_ratio = 20000
 
 blue = [156,192,249]
-im = Image.open('t3_2w_c_bw.png').convert('RGB')
+im = Image.open('t3_2w_c_bw_o.png').convert('RGB')
 imnp = np.array(im)
 #print(imnp.shape)
 
@@ -35,7 +35,7 @@ X=np.asarray(all_water)
 # print("\n----\n",X,"\n----\n",clusters,"\n----\n")
 
 """jonchar_net_article https://jonchar.net/notebooks/k-means/"""
-clusters, centroids=jcna.run_Kmeans(3,X)
+clusters, centroids=jcna.run_Kmeans(2,X)
 Y=centroids
 
 group_colors = ['skyblue', 'coral', 'lightgreen']
