@@ -5,8 +5,6 @@ from math import sqrt
 #import dev_to_kmeans_article as dtkm
 import jonchar_net_article as jcna
 
-water_removal_ratio = 20000
-
 blue = [156,192,249]
 im = Image.open('t3_2w_c_bw.png').convert('RGB')
 imnp = np.array(im)
@@ -23,6 +21,7 @@ all_water = [list(x) for x in set(tuple(x) for x in water_list)]
 
 #make it np
 X=np.asarray(all_water)
+print(X)
 
 """dev_to_kmeans_article https://dev.to/sajal2692/coding-k-means-clustering-using-python-and-numpy-fg1"""
 # clusters, centroids=dtkm.run_Kmeans(5,X)
@@ -35,16 +34,31 @@ X=np.asarray(all_water)
 # print("\n----\n",X,"\n----\n",clusters,"\n----\n")
 
 """jonchar_net_article https://jonchar.net/notebooks/k-means/"""
-clusters, centroids=jcna.run_Kmeans(3,X)
-Y=centroids
+# clusters, centroids=jcna.run_Kmeans(3,X)
+# Y=centroids
 
-group_colors = ['skyblue', 'coral', 'lightgreen']
-colors = [group_colors[j] for j in clusters]
+# group_colors = ['skyblue', 'coral', 'lightgreen']
+# colors = [group_colors[j] for j in clusters]
 
-fig, ax = plt.subplots(figsize=(4,4))
-ax.scatter(X[:,0], X[:,1], color=colors, alpha=0.5)
-ax.scatter(centroids[:,0], centroids[:,1], color=['blue', 'darkred', 'green'], marker='o', lw=2)
-ax.set_xlabel('$x_0$')
-ax.set_ylabel('$x_1$')
-plt.show()
-print("\n----\n",X,"\n----\n",clusters,"\n----\n")
+# fig, ax = plt.subplots(figsize=(4,4))
+# ax.scatter(X[:,0], X[:,1], color=colors, alpha=0.5)
+# ax.scatter(centroids[:,0], centroids[:,1], color=['blue', 'darkred', 'green'], marker='o', lw=2)
+# ax.set_xlabel('$x_0$')
+# ax.set_ylabel('$x_1$')
+# plt.show()
+# print("\n----\n",X,"\n----\n",clusters,"\n----\n")
+
+"""pure euclid distance"""
+all_water_euclid = dict()
+for water in all_water:
+    euclid_value = int(sqrt((water[0]*water[0])+(water[1]*water[1]))*10)
+    if euclid_value in all_water_euclid:
+        all_water_euclid[euclid_value].append(water)
+    else:
+        all_water_euclid[euclid_value]=list()
+        all_water_euclid[euclid_value].append(water)
+
+# all_water_euclid_ordered.sort()
+print(all_water_euclid)
+all_water_euclid_sorted=dict(sorted(all_water_euclid.items()))
+print(all_water_euclid_sorted)

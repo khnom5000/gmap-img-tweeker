@@ -10,10 +10,10 @@ im = Image.open('3.png').convert('RGB')
 # Make into Numpy array
 imnp = np.array(im)
 
-# Make all Light Grey pixels Green 
+# Make all Light Grey pixels Green
 imnp[(imnp[:,:,0]==232) & (imnp[:,:,1]==234) & (imnp[:,:,2]==237)] = green
 
-# Make all Dark Green pixels Green 
+# Make all Dark Green pixels Green
 imnp[(imnp[:,:,0]==168) & (imnp[:,:,1]==218) & (imnp[:,:,2]==181)] = green
 
 # Make all Dark Blue pixels Blue
