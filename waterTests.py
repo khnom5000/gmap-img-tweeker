@@ -6,7 +6,7 @@ from math import sqrt
 import jonchar_net_article as jcna
 
 blue = [156,192,249]
-im = Image.open('t3_2w_c_bw.png').convert('RGB')
+im = Image.open('t3_2w_c_bw_o.png').convert('RGB')
 imnp = np.array(im)
 #print(imnp.shape)
 
