@@ -16,7 +16,7 @@ def find_clusters(array):
 
     # Identify clusters greater than threshold
     for i, area in enumerate(water_areas):
-        if area > 3000:
+        if area > 20000:
             labelling[labelling == i] = 0
 
     # Convert labelled clusters back to binary mask
@@ -28,22 +28,33 @@ def find_clusters(array):
 
 if __name__ == '__main__':
 
-    im = cv2.imread('t3_2w_c_bw_o.png')[:,:,::-1]
+    im = cv2.imread('3e.png')[:,:,::-1]
+    # im = cv2.imread('t3_2w_c_bw_o.png')[:,:,::-1]
 
     # Convert to Greyscale - Would probably need tweaking when full image is provided
     gray_image = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-    (thresh, im_bw) = cv2.threshold(gray_image, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 
 
+
+    # plt.imshow(gray_image)
+    # plt.show()
+
+    im_bw = np.full(gray_image.shape, 255)
+
+    for i in range(205, 210):
+        im_bw[gray_image == i] = 0
+
+    # plt.imshow(im_bw)
+    # plt.show()
 
     labelling = find_clusters(im_bw)
 
 
     im[labelling>0]=(198,226,187)
 
-    cv2.imwrite('pk_out1.png', im)
+    cv2.imwrite('pk_out1.png', im[:,:,::-1])
 
     #Cv2 seems to have some weird colour displaying issue...
-    plt.imshow(im)
-    plt.show()
+    # plt.imshow(im)
+    # plt.show()
 
