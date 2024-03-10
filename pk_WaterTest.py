@@ -6,36 +6,44 @@ from matplotlib import pyplot as plt
 
 
 
-# find unique clusters of identical RGB codes
 def find_clusters(array):
+    #Invert image array
     array = (255 - array)
+
     labelling, label_count = ndimage.label(array)
 
+    water_areas = np.array(ndimage.sum(array, labelling, np.arange(labelling.max() + 1)))
+
+    # Identify clusters greater than threshold
+    for i, area in enumerate(water_areas):
+        if area > 3000:
+            labelling[labelling == i] = 0
+
+    # Convert labelled clusters back to binary mask
+    labelling[labelling > 0] = 1
+
+    return labelling
 
 
-    sand_areas = np.array(ndimage.sum(array, labelling, np.arange(labelling.max() + 1)))
 
-    mask = sand_areas > 3000
+if __name__ == '__main__':
 
-    remove_large_water = mask[labelling.ravel()].reshape(labelling.shape)
+    im = cv2.imread('t3_2w_c_bw_o.png')
 
-    plt.imshow(remove_large_water, interpolation='nearest')
+    # Convert to Greyscale - Would probably need tweaking when full image is provided
+    gray_image = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+    (thresh, im_bw) = cv2.threshold(gray_image, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+
+
+
+    labelling = find_clusters(im_bw)
+
+
+    im[labelling>0]=(198,226,187)
+
+    cv2.imwrite('pk_out1.png', im)
+
+    #Cv2 seems to have some weird colour displaying issue...
+    plt.imshow(im)
     plt.show()
 
-
-
-im = cv2.imread('t3_2w_c_bw_o.png', cv2.IMREAD_GRAYSCALE)
-
-(thresh, im_bw) = cv2.threshold(im, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-
-# cv2.imshow('image',im_bw)
-# cv2.waitKey(0)
-
-#change all color values in im to a single int (mask)
-# im_with_ints = arr_to_int(im, mask_GBR_int)
-#print('pic with mask values: \n', im_with_ints, '\n')
-
-# due to replacing array of 3 values to a single int, new array has one dimension less
-
-clusters, cluster_count = find_clusters(im_bw)
-print(f'Found {cluster_count} clusters', '\n')
