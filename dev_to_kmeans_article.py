@@ -9,7 +9,7 @@ def initialize_random_centroids(K, X):
     centroids = np.empty((K, n))
     for i in range(K):
         # pick a random data point from X as the centroid
-        centroids[i] =  X[np.random.choice(range(m))] 
+        centroids[i] =  X[np.random.choice(range(m))]
     return centroids
 
 def euclidean_distance(x1, x2):
@@ -49,7 +49,7 @@ def run_Kmeans(K, X, max_iterations=500):
     for _ in range(max_iterations):
         # create clusters by assigning the samples to the closet centroids
         clusters = create_clusters(centroids, K, X)
-        previous_centroids = centroids                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+        previous_centroids = centroids
         # compute means of the clusters and assign to centroids
         centroids = compute_means(clusters, K, X)
         # if the new_centroids are the same as the old centroids, return clusters

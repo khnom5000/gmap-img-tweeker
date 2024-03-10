@@ -3,7 +3,7 @@ import numpy as np
 def initialize_clusters(points, k):
     """Initializes clusters as k randomly selected points from points."""
     return points[np.random.randint(points.shape[0], size=k)]
-    
+
 # Function for calculating the distance between centroids
 def get_distances(centroid, points):
     """Returns the distance the centroid is from each data point in points."""
@@ -24,15 +24,15 @@ def run_Kmeans(K, X):
 
     # Loop for the maximum number of iterations
     for i in range(maxiter):
-        
+
         # Assign all points to the nearest centroid
         for i, c in enumerate(centroids):
             distances[:, i] = get_distances(c, X)
-            
+
         # Determine class membership of each point
         # by picking the closest centroid
         classes = np.argmin(distances, axis=1)
-        
+
         # Update centroid location using the newly
         # assigned data point classes
         for c in range(k):
