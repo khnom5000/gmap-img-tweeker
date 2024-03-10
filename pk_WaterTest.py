@@ -28,7 +28,7 @@ def find_clusters(array):
 
 if __name__ == '__main__':
 
-    im = cv2.imread('t3_2w_c_bw_o.png')
+    im = cv2.imread('t3_2w_c_bw_o.png')[:,:,::-1]
 
     # Convert to Greyscale - Would probably need tweaking when full image is provided
     gray_image = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
