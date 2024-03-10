@@ -1,12 +1,17 @@
 from PIL import Image
 import numpy as np
-from  matplotlib import pyplot as plt
 from math import sqrt
+#from  matplotlib import pyplot as plt
+#import json
 #import dev_to_kmeans_article as dtkm
-import jonchar_net_article as jcna
+#import jonchar_net_article as jcna
+#import npencoder as npe
 
+green = [187,226,198]
 blue = [156,192,249]
-im = Image.open('t3_2w_c_bw_o.png').convert('RGB')
+
+im = Image.open('3e.png').convert('RGB')
+
 imnp = np.array(im)
 #print(imnp.shape)
 
@@ -20,8 +25,8 @@ for i in range(len(x[0])):
 all_water = [list(x) for x in set(tuple(x) for x in water_list)]
 
 #make it np
-X=np.asarray(all_water)
-print(X)
+#X=np.asarray(all_water)
+# print(X)
 
 """dev_to_kmeans_article https://dev.to/sajal2692/coding-k-means-clustering-using-python-and-numpy-fg1"""
 # clusters, centroids=dtkm.run_Kmeans(5,X)
@@ -59,6 +64,42 @@ for water in all_water:
         all_water_euclid[euclid_value].append(water)
 
 # all_water_euclid_ordered.sort()
-print(all_water_euclid)
+# print(all_water_euclid)
 all_water_euclid_sorted=dict(sorted(all_water_euclid.items()))
-print(all_water_euclid_sorted)
+# with open("water.json", "w") as outfile:
+#     json.dump(all_water_euclid_sorted, outfile, cls=npe.NpEncoder)
+
+prev_x=0
+i=0
+all_water_grouped=list()
+all_water_grouped.append(list())
+for x in all_water_euclid_sorted:
+    # print(x,all_water_euclid_sorted[x])
+    if prev_x == 0:
+        None
+    elif prev_x <= x <= prev_x+10:
+        None
+    else:
+        i+=1
+        all_water_grouped.append(list())
+
+    prev_x=x
+    for w in all_water_euclid_sorted[x]:
+        all_water_grouped[i].append(w)
+
+# fig = plt.figure()
+# ax = fig.add_subplot(111)
+# ax.scatter(X[:,0], X[:,1], alpha=0.5)
+
+for group in all_water_grouped:
+    if len(group) < 360:
+        #Y=np.asarray(group)
+        #ax.scatter(Y[:,0], Y[:,1], alpha=0.5)
+        for w in group:
+            imnp[w[0],w[1],0]=green[0]
+            imnp[w[0],w[1],1]=green[1]
+            imnp[w[0],w[1],2]=green[2]
+
+# plt.show()
+
+Image.fromarray(imnp).save('3ee.png')
