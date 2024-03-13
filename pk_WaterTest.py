@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     # Dont quite know what this means but ~20000 best on the test google image...
     # 3000 worked on the simple test images
-    water_tolerance = 20000
+    water_tolerance = 100000
 
     im = cv2.imread('3e.png')[:,:,::-1]
     # im = cv2.imread('t3_2w_c_bw_o.png')[:,:,::-1]

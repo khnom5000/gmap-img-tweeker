@@ -9,6 +9,12 @@ from math import sqrt
 
 green = [187,226,198]
 blue = [156,192,249]
+med_blue = [170,207,228]
+green_blue = [180,218,211]
+
+euclid_precision=1000
+degrees_of_seperation=49
+water_group_size=360
 
 im = Image.open('3e.png').convert('RGB')
 
@@ -17,6 +23,7 @@ imnp = np.array(im)
 
 #x here holds a tuple - of line, column, RBG value, we can ignore the RBG bit i.e. x[2] as its always [0,1,2]
 x = np.where(imnp == blue)
+x = np.where(np.logical_or(imnp == blue,imnp == med_blue,imnp == green_blue))
 
 #Get the uniq list of "blue" pixels
 water_list = list()
@@ -56,28 +63,23 @@ all_water = [list(x) for x in set(tuple(x) for x in water_list)]
 """pure euclid distance"""
 all_water_euclid = dict()
 for water in all_water:
-    euclid_value = int(sqrt((water[0]*water[0])+(water[1]*water[1]))*10)
+    euclid_value = int(sqrt((water[0]*water[0])+(water[1]*water[1]))*euclid_precision)
     if euclid_value in all_water_euclid:
         all_water_euclid[euclid_value].append(water)
     else:
         all_water_euclid[euclid_value]=list()
         all_water_euclid[euclid_value].append(water)
 
-# all_water_euclid_ordered.sort()
-# print(all_water_euclid)
 all_water_euclid_sorted=dict(sorted(all_water_euclid.items()))
-# with open("water.json", "w") as outfile:
-#     json.dump(all_water_euclid_sorted, outfile, cls=npe.NpEncoder)
 
 prev_x=0
 i=0
 all_water_grouped=list()
 all_water_grouped.append(list())
 for x in all_water_euclid_sorted:
-    # print(x,all_water_euclid_sorted[x])
     if prev_x == 0:
         None
-    elif prev_x <= x <= prev_x+10:
+    elif prev_x <= x <= prev_x+degrees_of_seperation:
         None
     else:
         i+=1
@@ -92,7 +94,7 @@ for x in all_water_euclid_sorted:
 # ax.scatter(X[:,0], X[:,1], alpha=0.5)
 
 for group in all_water_grouped:
-    if len(group) < 360:
+    if len(group) < water_group_size:
         #Y=np.asarray(group)
         #ax.scatter(Y[:,0], Y[:,1], alpha=0.5)
         for w in group:
